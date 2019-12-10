@@ -87,6 +87,7 @@ export default {
           this.logging = true
           this.$store.dispatch('user/login', values).then((result) => {
             this.$router.push({ path: this.redirect || '/' })
+            // this.$store.dispatch('menulist/getMenuList')
             this.logging = false
           }).catch((error) => {
             this.logging = false

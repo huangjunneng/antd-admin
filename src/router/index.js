@@ -5,7 +5,7 @@ import 'nprogress/nprogress.css' // progress bar style
 import { getToken } from '@/utils/auth' // get token from cookie
 import store from '../store'
 
-import Home from '../views/Home.vue'
+import MenuView from '../layout/MenuView'
 
 Vue.use(VueRouter)
 
@@ -17,9 +17,16 @@ const routes = [
   },
   {
     path: '/',
-    name: 'home',
-    component: Home
-  }
+    name: 'HOME',
+    component: MenuView
+  },
+  {
+    path: '/404',
+    component: () => import('@/views/404/404'),
+    hidden: true
+  },
+  // 404 page must be placed at the end !!!
+  { path: '*', redirect: '/404', hidden: true }
 ]
 
 const router = new VueRouter({
@@ -34,12 +41,13 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 router.beforeEach(async(to, from, next) => {
   // start progress bar
   NProgress.start()
-
+  debugger
   // set page title
   // document.title = getPageTitle(to.meta.title)
 
   // determine whether the user has logged in
   const hasToken = getToken()
+  console.log(hasToken)
 
   if (hasToken) {
     if (to.path === '/login') {
@@ -54,6 +62,7 @@ router.beforeEach(async(to, from, next) => {
         try {
           // get user info
           await store.dispatch('user/getInfo')
+          await store.dispatch('menulist/getMenuList')
           next()
         } catch (error) {
           // remove token and go to login page to re-login

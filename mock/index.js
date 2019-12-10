@@ -2,9 +2,11 @@ import Mock from 'mockjs'
 import { param2Obj } from '../src/utils'
 
 import user from './user'
+import menulist from './menulist'
 
 const mocks = [
-  ...user
+  ...user,
+  ...menulist
 ]
 
 // for front mock

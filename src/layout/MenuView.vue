@@ -2,46 +2,23 @@
   <a-layout id="components-layout-demo-top-side-2">
     <a-layout-header class="header">
       <div class="logo" />
-      <a-menu theme="dark" mode="horizontal" :defaultSelectedKeys="['1']" :style="{ lineHeight: '64px' }" @click="menuItemClick" >
+      <a-menu theme="dark" mode="horizontal" :defaultSelectedKeys="['home']" :style="{ lineHeight: '64px' }" @click="menuItemClick" >
         <a-menu-item key="home">HOME</a-menu-item>
-        <a-menu-item  v-for="item in menuList" :key="item" >{{ item }}</a-menu-item>
+        <a-menu-item  v-for="item in menuList" :key="item.name" >{{ item.name }}</a-menu-item>
       </a-menu>
     </a-layout-header>
     <a-layout>
-      <a-layout-sider width="200" style="background: #fff">
+      <a-layout-sider width="200" style="background: #fff"  v-if="sumMenu.length">
         <a-menu
           mode="inline"
+          theme="dark"
           :defaultSelectedKeys="['1']"
-          :defaultOpenKeys="['sub1']"
+          :defaultOpenKeys="['1']"
           :style="{ height: '100%', borderRight: 0 }"
         >
-          <a-sub-menu key="sub1">
-            <span slot="title">
-              <a-icon type="user" />subnav 1
-            </span>
-            <a-menu-item key="1">option1</a-menu-item>
-            <a-menu-item key="2">option2</a-menu-item>
-            <a-menu-item key="3">option3</a-menu-item>
-            <a-menu-item key="4">option4</a-menu-item>
-          </a-sub-menu>
-          <a-sub-menu key="sub2">
-            <span slot="title">
-              <a-icon type="laptop" />subnav 2
-            </span>
-            <a-menu-item key="5">option5</a-menu-item>
-            <a-menu-item key="6">option6</a-menu-item>
-            <a-menu-item key="7">option7</a-menu-item>
-            <a-menu-item key="8">option8</a-menu-item>
-          </a-sub-menu>
-          <a-sub-menu key="sub3">
-            <span slot="title">
-              <a-icon type="notification" />subnav 3
-            </span>
-            <a-menu-item key="9">option9</a-menu-item>
-            <a-menu-item key="10">option10</a-menu-item>
-            <a-menu-item key="11">option11</a-menu-item>
-            <a-menu-item key="12">option12</a-menu-item>
-          </a-sub-menu>
+          <a-menu-item v-for="(item, index) in sumMenu" :key="index" >
+              <a-icon type="appstore" :class="item.icon" />{{ item.name }}
+          </a-menu-item>
         </a-menu>
       </a-layout-sider>
       <a-layout style="padding: 0 24px 24px">
@@ -63,22 +40,39 @@
 export default {
   data() {
     return {
-      menuList: ['系统管理', '会员管理'],
+      submenu: [],
+      activeMenu: 'home',
       collapsed: false
     }
+  },
+  computed: {
+    menuList() {
+      return this.$store.state.menulist.menulist
+    },
+    sumMenu() {
+      let list = []
+      this.$store.state.menulist.menulist.forEach(item => {
+        if (item.name === this.activeMenu) {
+          list = item.list
+        }
+      })
+      return list
+    }
+  },
+  created() {
   },
   mounted() {
     console.log(123)
   },
   methods: {
     menuItemClick(item) {
-      console.log(item)
-      this.$axios.get('sys/menu/list?token=6f961db45cf15ca4eed61718a9b029be', {
-        token: '6f961db45cf15ca4eed61718a9b029be'
-      }).then((res) => {
-        console.log(res)
-        debugger
-      })
+      this.activeMenu = item.key
+      // this.$axios.get('sys/menu/list?token=6f961db45cf15ca4eed61718a9b029be', {
+      //   token: '6f961db45cf15ca4eed61718a9b029be'
+      // }).then((res) => {
+      //   console.log(res)
+      //   debugger
+      // })
     }
   }
 }
