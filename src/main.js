@@ -4,6 +4,7 @@ import 'normalize.css/normalize.css'
 import App from './App.vue'
 import 'ant-design-vue/dist/antd.css'
 import './registerServiceWorker'
+
 import router from './router'
 import axios from 'axios'
 import store from './store'

@@ -39,21 +39,22 @@ module.exports = {
     proxy: {
       // change xxx-api/login => mock/login
       // detail: https://cli.vuejs.org/config/#devserver-proxy
-    //   [process.env.VUE_APP_BASE_API]: {
-    //     target: `http://47.106.159.141:8080`,
-    //     changeOrigin: true,
-    //     pathRewrite: {
-    //       ['^' + process.env.VUE_APP_BASE_API]: ''
-    //     }
-    //   },
+      [process.env.VUE_APP_BASE_API]: {
+        target: `http://127.0.0.1:${port}/mock`,
+        changeOrigin: true,
+        pathRewrite: {
+          ['^' + process.env.VUE_APP_BASE_API]: ''
+        }
+      },
       '/sys': {
         target: `http://47.106.159.141:8080/sys`,
         changeOrigin: true,
         pathRewrite: {
-          '^/sys': '/sys'//路径重写 
+          '^/sys': '/sys' //路径重写 
         }
       }
-    }
+    },
+    after: require('./mock/mock-server.js')
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that

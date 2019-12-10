@@ -5,7 +5,7 @@
 </template>
 
 <script>
-
+// @ is an alias to /src
 import MenuView from '@/layout/MenuView.vue'
 
 export default {
