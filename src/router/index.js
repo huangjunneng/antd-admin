@@ -6,6 +6,7 @@ import { getToken } from '@/utils/auth' // get token from cookie
 import store from '../store'
 
 import MenuView from '../layout/MenuView'
+import RouteView from '@/layout/RouteView'
 
 Vue.use(VueRouter)
 
@@ -17,8 +18,64 @@ const routes = [
   },
   {
     path: '/',
-    name: 'HOME',
-    component: MenuView
+    name: 'layout',
+    redirect: '/home',
+    component: MenuView,
+    children: [
+      {
+        path: '/home',
+        name: '主页',
+        component: () => import('@/views/home/index.vue')
+      },
+      {
+        path: '/sys',
+        name: '系统管理',
+        redirect: '/sys/user',
+        component: RouteView,
+        meta: { title: '系统管理', icon: 'dashboard' },
+        children: [
+          {
+            path: '/sys/user',
+            name: '管理员列表',
+            component: () => import('@/views/page1.vue'),
+            meta: { title: '管理员列表', icon: 'dashboard' }
+          },
+          {
+            path: '/sys/role',
+            name: '角色管理',
+            component: () => import('@/views/page2'),
+            meta: { title: '角色管理', icon: 'dashboard' }
+          }
+        ]    
+      },
+      {
+        path: '/member',
+        name: '会员管理',
+        redirect: '/member/tbkwalletrecord',
+        component: RouteView,
+        meta: { title: '会员管理', icon: 'dashboard' },
+        children: [
+          {
+            path: '/member/tbkwalletrecord',
+            name: '消费记录 ',
+            component: () => import('@/views/page1'),
+            meta: { title: '消费记录', icon: 'dashboard' }
+          },
+          {
+            path: '/member/tbkmember',
+            name: '会员信息',
+            component: () => import('@/views/page2'),
+            meta: { title: '会员信息', icon: 'dashboard' }
+          },
+          {
+            path: '/member/tbkwallet',
+            name: '会员钱包',
+            component: () => import('@/views/page2'),
+            meta: { title: '会员钱包', icon: 'dashboard' }
+          }
+        ]    
+      }
+    ]
   },
   {
     path: '/404',
@@ -41,7 +98,6 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 router.beforeEach(async(to, from, next) => {
   // start progress bar
   NProgress.start()
-  // debugger
   // set page title
   // document.title = getPageTitle(to.meta.title)
 
@@ -60,7 +116,7 @@ router.beforeEach(async(to, from, next) => {
         next()
       } else {
         try {
-          // get user info
+          // get user info and MenuList
           await store.dispatch('user/getInfo')
           await store.dispatch('menulist/getMenuList')
           next()

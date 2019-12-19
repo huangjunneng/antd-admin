@@ -11,25 +11,25 @@
       <a-layout-sider width="200" style="background: #fff"  v-if="sumMenu.length">
         <a-menu
           mode="inline"
-          theme="dark"
+          theme=""
           :defaultSelectedKeys="['1']"
           :defaultOpenKeys="['1']"
-          :style="{ height: '100%', borderRight: 0 }"
+          :style="{ height: '100%', borderRight: 10 }"
+          @click="menuItemClick2"
         >
-          <a-menu-item v-for="(item, index) in sumMenu" :key="index" >
+          <a-menu-item v-for="item in sumMenu" :key="item.url" :xpath="item.url">
               <a-icon type="appstore" :class="item.icon" />{{ item.name }}
           </a-menu-item>
         </a-menu>
       </a-layout-sider>
       <a-layout style="padding: 0 24px 24px">
-        <a-breadcrumb style="margin: 16px 0">
-          <a-breadcrumb-item>Home</a-breadcrumb-item>
-          <a-breadcrumb-item>List</a-breadcrumb-item>
-          <a-breadcrumb-item>App</a-breadcrumb-item>
-        </a-breadcrumb>
-        <a-layout-content :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '580px' }">
-          XXXXXXXX
-          <slot />
+        <bread-crumb class="breadcrumb-container" ></bread-crumb>
+        <a-layout-content :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }">
+          <transition name="page-toggle">
+            <keep-alive>
+              <router-view />
+            </keep-alive>
+          </transition>
         </a-layout-content>
       </a-layout>
     </a-layout>
@@ -37,7 +37,12 @@
 </template>
 <script>
 // import {getMenuList} from "@/api/menuList.js"
+import BreadCrumb from '@/components/Breadcrumb/index.vue'
+
 export default {
+  components: {
+    BreadCrumb
+  },
   data() {
     return {
       submenu: [],
@@ -47,12 +52,9 @@ export default {
   },
   computed: {
     menuList() {
-      console.log('menuList------------')
-      console.log(this.$store.state.menulist.menulist)
       return this.$store.state.menulist.menulist
     },
     sumMenu() {
-      console.log('sumMenu------------')
       let list = []
       this.$store.state.menulist.menulist.forEach(item => {
         if (item.name === this.activeMenu) {
@@ -69,13 +71,24 @@ export default {
   },
   methods: {
     menuItemClick(item) {
+      debugger;
+      if(item.key === "home"){
+         this.$router.push('/'+item.key)
+      }else{
+         let acitveMenu = this.menuList.filter(obj => obj.name == item.key)
+         this.$router.push('/'+acitveMenu[0].list[0].url)
+      }
       this.activeMenu = item.key
       // this.$axios.get('sys/menu/list?token=6f961db45cf15ca4eed61718a9b029be', {
       //   token: '6f961db45cf15ca4eed61718a9b029be'
       // }).then((res) => {
       //   console.log(res)
-      //   debugger
       // })
+    },
+    menuItemClick2(item) {
+      this.target
+       this.$router.push('/'+item.key)
+      debugger
     }
   }
 }
