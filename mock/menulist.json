@@ -169,5 +169,58 @@
                 "list": null
             }
         ]
+    },
+    {
+        "menuId": 100,
+        "parentId": 0,
+        "parentName": null,
+        "name": "APM",
+        "url": "apm/index",
+        "perms": null,
+        "type": 0,
+        "icon": "system",
+        "orderNum": 0,
+        "open": null,
+        "list": [
+            {
+                "menuId": 101,
+                "parentId": 100,
+                "parentName": null,
+                "name": "DashBoard",
+                "url": "apm/dashboard",
+                "perms": null,
+                "type": 1,
+                "icon": "config",
+                "orderNum": 6,
+                "open": null,
+                "list": null
+            },
+            {
+                "menuId": 102,
+                "parentId": 100,
+                "parentName": null,
+                "name": "事务",
+                "url": "apm/business",
+                "perms": null,
+                "type": 1,
+                "icon": "config",
+                "orderNum": 6,
+                "open": null,
+                "list": null
+            },
+            {
+                "menuId": 103,
+                "parentId": 100,
+                "parentName": null,
+                "name": "数据库",
+                "url": "apm/database",
+                "perms": null,
+                "type": 1,
+                "icon": "config",
+                "orderNum": 6,
+                "open": null,
+                "list": null
+            }
+        ]
     }
 ]

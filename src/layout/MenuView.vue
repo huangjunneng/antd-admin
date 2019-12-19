@@ -27,7 +27,7 @@
           <a-breadcrumb-item>List</a-breadcrumb-item>
           <a-breadcrumb-item>App</a-breadcrumb-item>
         </a-breadcrumb>
-        <a-layout-content :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }">
+        <a-layout-content :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '580px' }">
           XXXXXXXX
           <slot />
         </a-layout-content>
@@ -47,9 +47,12 @@ export default {
   },
   computed: {
     menuList() {
+      console.log('menuList------------')
+      console.log(this.$store.state.menulist.menulist)
       return this.$store.state.menulist.menulist
     },
     sumMenu() {
+      console.log('sumMenu------------')
       let list = []
       this.$store.state.menulist.menulist.forEach(item => {
         if (item.name === this.activeMenu) {
