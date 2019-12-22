@@ -2,29 +2,40 @@
   <a-layout id="components-layout-demo-top-side-2">
     <a-layout-header class="header">
       <div class="logo" />
-      <a-menu theme="dark" mode="horizontal" :defaultSelectedKeys="['home']" :style="{ lineHeight: '64px' }" @click="menuItemClick" >
-        <a-menu-item key="home">HOME</a-menu-item>
-        <a-menu-item  v-for="item in menuList" :key="item.name" >{{ item.name }}</a-menu-item>
+      <a-menu
+        theme="dark"
+        mode="horizontal"
+        :defaultSelectedKeys="['1']"
+        :style="{ lineHeight: '64px' }"
+        @click="menuItemClick"
+        :selectedKeys="selectedKeys"
+
+      >
+        <a-menu-item key="主页" name="主页">HOME</a-menu-item>
+        <a-menu-item v-for="item in menuList" :key="item.name"  :url="item.url" :name="item.name">{{ item.name }}</a-menu-item>
       </a-menu>
     </a-layout-header>
     <a-layout>
-      <a-layout-sider width="200" style="background: #fff"  v-if="sumMenu.length">
+      <a-layout-sider width="200" style="background: #fff" v-if="sumMenu.length">
         <a-menu
           mode="inline"
-          theme=""
           :defaultSelectedKeys="['1']"
           :defaultOpenKeys="['1']"
           :style="{ height: '100%', borderRight: 10 }"
           @click="menuItemClick2"
+          :selectedKeys="selectedKeys2"
         >
-          <a-menu-item v-for="item in sumMenu" :key="item.url" :xpath="item.url">
-              <a-icon type="appstore" :class="item.icon" />{{ item.name }}
+          <a-menu-item v-for="item in sumMenu" :key="item.url"  :url="item.url" :name="item.name">
+            <a-icon type="appstore" :class="item.icon" />
+            {{ item.name }}
           </a-menu-item>
         </a-menu>
       </a-layout-sider>
       <a-layout style="padding: 0 24px 24px">
-        <bread-crumb class="breadcrumb-container" ></bread-crumb>
-        <a-layout-content :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }">
+        <bread-crumb class="breadcrumb-container"></bread-crumb>
+        <a-layout-content
+          :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
+        >
           <transition name="page-toggle">
             <keep-alive>
               <router-view />
@@ -36,8 +47,7 @@
   </a-layout>
 </template>
 <script>
-// import {getMenuList} from "@/api/menuList.js"
-import BreadCrumb from '@/components/Breadcrumb/index.vue'
+import BreadCrumb from '@/components/Breadcrumb/index.vue';
 
 export default {
   components: {
@@ -45,50 +55,58 @@ export default {
   },
   data() {
     return {
-      submenu: [],
+      selectedKeys: [],
+      selectedKeys2: [],
+      sumMenu: [],
       activeMenu: 'home',
       collapsed: false
+    };
+  },
+  watch: {
+    activeMenu(newValue, oldValue) {
+      this.sumMenu = [];
+      this.$store.state.menulist.menulist.forEach(item => {
+        if (item.name === this.activeMenu) {
+          this.sumMenu = item.list;
+        }
+      });
+    },
+    $route() {
+      this.updateMenu()
     }
   },
   computed: {
     menuList() {
-      return this.$store.state.menulist.menulist
-    },
-    sumMenu() {
-      let list = []
-      this.$store.state.menulist.menulist.forEach(item => {
-        if (item.name === this.activeMenu) {
-          list = item.list
-        }
-      })
-      return list
+      return this.$store.state.menulist.menulist;
     }
   },
-  created() {
+  created () {
+    this.updateMenu()
   },
   mounted() {
-    console.log(123)
   },
   methods: {
     menuItemClick(item) {
-      debugger;
-      if(item.key === "home"){
-         this.$router.push('/'+item.key)
-      }else{
-         let acitveMenu = this.menuList.filter(obj => obj.name == item.key)
-         this.$router.push('/'+acitveMenu[0].list[0].url)
+      this.activeMenu = item.key;
+      this.selectedKeys = [item.key];
+      if (item.key === '主页') {
+        this.$router.push('/home');
+      } else {
+        let acitveMenu = this.menuList.filter(obj => obj.name === item.key);
+        this.$router.push('/' + acitveMenu[0].list[0].url);
+        // this.selectedKeys = [acitveMenu[0].name];
+        this.selectedKeys2 = [acitveMenu[0].list[0].url]
       }
-      this.activeMenu = item.key
-      // this.$axios.get('sys/menu/list?token=6f961db45cf15ca4eed61718a9b029be', {
-      //   token: '6f961db45cf15ca4eed61718a9b029be'
-      // }).then((res) => {
-      //   console.log(res)
-      // })
     },
     menuItemClick2(item) {
-      this.target
-       this.$router.push('/'+item.key)
-      debugger
+      this.$router.push('/' + item.key);
+      this.selectedKeys2 = item.keyPath;
+    },
+    updateMenu () {
+      let routes = this.$route.matched.concat()
+      this.activeMenu = routes[0].name;
+      this.selectedKeys = routes.map(item => item.name)
+      this.selectedKeys2 = [routes[1].path.substr(1)]
     }
   }
 }

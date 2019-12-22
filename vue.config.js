@@ -46,7 +46,7 @@ module.exports = {
           ['^' + process.env.VUE_APP_BASE_API]: ''
         }
       },
-      '/sys': {
+      '/sysxxxx': {
         target: `http://47.106.159.141:8080/sys`,
         changeOrigin: true,
         pathRewrite: {
