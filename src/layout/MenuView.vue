@@ -33,7 +33,7 @@
       <a-layout style="padding: 0 24px 24px">
         <bread-crumb class="breadcrumb-container"></bread-crumb>
         <a-layout-content
-          :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
+          :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '600px' }"
         >
           <transition name="page-toggle">
             <keep-alive>
@@ -67,7 +67,7 @@ export default {
       this.$store.state.menulist.menulist.forEach(item => {
         if (item.name === this.activeMenu) {
           this.sumMenu = item.list;
-          alert(this.sumMenu.length)
+          // alert(this.sumMenu.length)
         }
       });
     },

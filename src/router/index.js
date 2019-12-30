@@ -85,20 +85,20 @@ const routes = [
   },
   {
     path: '/apm',
-    name: '性能管理',
+    name: '统管理',
     redirect: '/apm/index',
     component: MenuView,
     meta: { title: 'APM管理', icon: 'dashboard' },
     children: [
       {
-        path: 'index',
-        name: 'Index ',
+        path: '/apm/index',
+        name: 'DashBoard ',
         component: () => import('@/views/apm/index'),
         meta: { title: 'Index', icon: 'dashboard' }
       },
       {
-        path: 'index',
-        name: 'Index ',
+        path: 'business',
+        name: '事务 ',
         component: () => import('@/views/apm/index'),
         meta: { title: 'Index', icon: 'dashboard' }
       },
