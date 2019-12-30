@@ -9,7 +9,6 @@
         :style="{ lineHeight: '64px' }"
         @click="menuItemClick"
         :selectedKeys="selectedKeys"
-
       >
         <a-menu-item key="主页" name="主页">HOME</a-menu-item>
         <a-menu-item v-for="item in menuList" :key="item.name"  :url="item.url" :name="item.name">{{ item.name }}</a-menu-item>
@@ -27,7 +26,7 @@
         >
           <a-menu-item v-for="item in sumMenu" :key="item.url"  :url="item.url" :name="item.name">
             <a-icon type="appstore" :class="item.icon" />
-            {{ item.name }}
+            {{ item.name }}12
           </a-menu-item>
         </a-menu>
       </a-layout-sider>
@@ -68,6 +67,7 @@ export default {
       this.$store.state.menulist.menulist.forEach(item => {
         if (item.name === this.activeMenu) {
           this.sumMenu = item.list;
+          alert(this.sumMenu.length)
         }
       });
     },

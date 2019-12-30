@@ -51,5 +51,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.breadcrumb{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
 </style>

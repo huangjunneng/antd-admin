@@ -84,6 +84,39 @@ const routes = [
     ]
   },
   {
+    path: '/apm',
+    name: '性能管理',
+    redirect: '/apm/index',
+    component: MenuView,
+    meta: { title: 'APM管理', icon: 'dashboard' },
+    children: [
+      {
+        path: 'index',
+        name: 'Index ',
+        component: () => import('@/views/apm/index'),
+        meta: { title: 'Index', icon: 'dashboard' }
+      },
+      {
+        path: 'index',
+        name: 'Index ',
+        component: () => import('@/views/apm/index'),
+        meta: { title: 'Index', icon: 'dashboard' }
+      },
+      {
+        path: 'index',
+        name: 'Index ',
+        component: () => import('@/views/apm/index'),
+        meta: { title: 'Index', icon: 'dashboard' }
+      },
+      {
+        path: 'index',
+        name: '主页 ',
+        component: () => import('@/views/apm/index'),
+        meta: { title: '主页', icon: 'dashboard' }
+      }
+    ]
+  },
+  {
     path: '/404',
     component: () => import('@/views/404/404'),
     hidden: true
